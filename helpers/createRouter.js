@@ -2,13 +2,13 @@ const { Router } = require("express");
 
 class RouterCreator {
   #options;
-  #defaultMiddlewares;
+  #commonMiddlewares;
   #router;
 
-  constructor({ options, defaultMiddlewares = [] }) {
+  constructor({ options, commonMiddlewares = [] }) {
     this.#router = Router();
     this.#options = options;
-    this.#defaultMiddlewares = defaultMiddlewares;
+    this.#commonMiddlewares = commonMiddlewares;
   }
 
   get router() {
@@ -18,7 +18,7 @@ class RouterCreator {
   setRouter() {
     this.#options.forEach(({ route, method, controller, middlewares }) => {
       if (!route || !method || !controller) return;
-      const dm = this.#defaultMiddlewares;
+      const dm = this.#commonMiddlewares;
       const m =
         middlewares && dm.length
           ? dm.concat(middlewares)
@@ -34,8 +34,8 @@ class RouterCreator {
   }
 }
 
-const createRouter = ({ options, defaultMiddlewares }) => {
-  return new RouterCreator({ options, defaultMiddlewares });
+const createRouter = ({ options, commonMiddlewares }) => {
+  return new RouterCreator({ options, commonMiddlewares });
 };
 
 module.exports = createRouter;
